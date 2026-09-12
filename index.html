@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Art Surgeon — Art isn't talent, it's repairable</title>
+<meta name="description" content="Art Surgeon — hyperrealistic portrait commissions, original art, prints, weekend art classes, workshops, and downloadable art guides." />
+<link rel="icon" type="image/jpeg" href="art-surgeon-logo.jpeg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   ART SURGEON — SIGNATURE STYLE
+   Built around the brand mark: a pencil sharpened into a
+   scalpel, rendered on midnight paper. Every recurring motif
+   below (the hatch-mark divider, the scribble underline, the
+   grain overlay) is drawn from that one image, so the whole
+   site reads as one hand-considered object.
+   ============================================================ */
+
+:root{
+  --ground:     #12132A;   /* midnight navy — lifted from the logo plate */
+  --ground-2:   #191B38;   /* slightly lifted panel navy */
+  --ground-3:   #21234A;
+  --line:       #33355E;   /* soft graphite-blue hairline */
+  --paper:      #F4F1E6;   /* warm sketch-paper ink */
+  --paper-dim:  #ABAAC6;   /* muted lavender-grey secondary text */
+  --sienna:     #C97A54;   /* burnt-sienna conté accent */
+  --sold:       #6B6A82;
+
+  --serif: 'Fraunces', Georgia, serif;
+  --sans:  'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --max: 1160px;
+}
+
+*{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{
+  margin:0;
+  background:var(--ground);
+  color:var(--paper);
+  font-family:var(--sans);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  position:relative;
+}
+
+/* paper-grain overlay, drawn once, applied everywhere */
+body::before{
+  content:"";
+  position:fixed; inset:0; z-index:1; pointer-events:none;
+  opacity:.05; mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+img{ max-width:100%; display:block; }
+a{ color:inherit; }
+.wrap{ max-width:var(--max); margin:0 auto; padding:0 28px; position:relative; z-index:2; }
+
+h1,h2,h3{ font-family:var(--serif); font-weight:500; line-height:1.12; margin:0; }
+p{ margin:0; }
+
+/* ---------- signature motif: hatch divider ---------- 
+   Echoes the sharpened pencil-tip hatching in the logo.
+   Used once per section — never as decoration on every element. */
+.hatch{
+  display:flex; align-items:center; gap:14px;
+  color:var(--paper-dim); font-size:13px; letter-spacing:.06em;
+  text-transform:uppercase; margin-bottom:20px;
+}
+.hatch svg{ flex:none; }
+.hatch-lines path{ stroke:var(--sienna); stroke-width:1.6; }
+
+/* ---------- signature motif: scribble underline on hover ---------- */
+.scribble{ position:relative; text-decoration:none; }
+.scribble::after{
+  content:""; position:absolute; left:0; right:0; bottom:-4px; height:6px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 8'%3E%3Cpath d='M0 5 Q10 1 20 5 T40 5 T60 5 T80 5 T100 5' fill='none' stroke='%23C97A54' stroke-width='2'/%3E%3C/svg%3E");
+  background-repeat:repeat-x; background-size:44px 8px;
+  opacity:0; transform:translateY(2px); transition:opacity .18s ease, transform .18s ease;
+}
+.scribble:hover::after{ opacity:1; transform:translateY(0); }
+
+/* ---------- nav ---------- */
+header{
+  position:sticky; top:0; z-index:40;
+  background:rgba(18,19,42,.86); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+nav.wrap{ display:flex; align-items:center; justify-content:space-between; height:76px; }
+.brandmark{ display:flex; align-items:center; gap:12px; text-decoration:none; }
+.brandmark img{ height:40px; width:auto; }
+.navlinks{ display:flex; gap:34px; list-style:none; margin:0; padding:0; }
+.navlinks a{ text-decoration:none; color:var(--paper-dim); font-size:14.5px; padding-bottom:6px; }
+.navlinks a:hover{ color:var(--paper); }
+.navtoggle{ display:none; background:none; border:0; color:var(--paper); font-size:24px; cursor:pointer; }
+
+@media (max-width:780px){
+  .navlinks{
+    position:fixed; inset:76px 0 0 0; background:var(--ground);
+    flex-direction:column; padding:32px 28px; gap:22px;
+    transform:translateY(-8px); opacity:0; pointer-events:none;
+    transition:opacity .2s ease, transform .2s ease;
+  }
+  .navlinks.open{ opacity:1; transform:translateY(0); pointer-events:auto; }
+  .navlinks a{ font-size:18px; color:var(--paper); }
+  .navtoggle{ display:block; }
+}
+
+/* ---------- hero ---------- */
+.hero{
+  padding:96px 0 100px;
+  border-bottom:1px solid var(--line);
+  overflow:hidden;
+  position:relative;
+}
+.hero-grid{ display:grid; grid-template-columns:.62fr 1fr; gap:56px; align-items:center; }
+@media (max-width:900px){ .hero-grid{ grid-template-columns:1fr; text-align:center; } }
+.hero-mark img{ width:100%; max-width:280px; margin:0 auto; }
+.hero h1{
+  font-size:clamp(38px,6vw,66px); letter-spacing:-.01em;
+  max-width:16ch;
+}
+@media (max-width:900px){ .hero h1{ margin:0 auto; } }
+.hero .sub{ margin-top:24px; max-width:50ch; color:var(--paper-dim); font-size:17.5px; }
+@media (max-width:900px){ .hero .sub{ margin-left:auto; margin-right:auto; } }
+.hero .cta-row{ margin-top:40px; display:flex; gap:16px; flex-wrap:wrap; }
+@media (max-width:900px){ .hero .cta-row{ justify-content:center; } }
+
+.btn{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:13px 26px; border-radius:2px;
+  font-size:14.5px; text-decoration:none;
+  border:1px solid var(--line);
+  transition:border-color .2s ease, background .2s ease, transform .15s ease;
+}
+.btn-solid{ background:var(--sienna); border-color:var(--sienna); color:#1a1526; }
+.btn-solid:hover{ background:#d98a63; }
+.btn-line:hover{ border-color:var(--paper-dim); }
+
+/* ---------- section shell ---------- */
+section{ padding:104px 0; border-bottom:1px solid var(--line); position:relative; }
+.section-head{ max-width:60ch; margin-bottom:52px; }
+.section-head h2{ font-size:clamp(28px,4vw,40px); }
+.section-head .dek{ margin-top:14px; color:var(--paper-dim); font-size:16.5px; }
+
+/* ---------- gallery filter ---------- */
+.filters{ display:flex; gap:10px; margin-bottom:38px; flex-wrap:wrap; }
+.filter{
+  padding:8px 16px; font-size:13.5px; border:1px solid var(--line);
+  background:none; color:var(--paper-dim); cursor:pointer; border-radius:2px;
+  font-family:var(--sans);
+}
+.filter.active{ color:var(--paper); border-color:var(--sienna); }
+
+.grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+@media (max-width:900px){ .grid{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width:560px){ .grid{ grid-template-columns:1fr; } }
+
+.card{
+  background:var(--ground-2); border:1px solid var(--line);
+  overflow:hidden; transition:border-color .2s ease;
+}
+.card:hover{ border-color:var(--sienna); }
+.card .thumb{
+  aspect-ratio:4/5; width:100%; object-fit:cover;
+  background:var(--ground-3);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M0 40L40 0' stroke='%2333355E' stroke-width='1'/%3E%3C/svg%3E");
+}
+.card .body{ padding:18px 20px 22px; }
+.card .tag{ font-size:12.5px; color:var(--paper-dim); margin-bottom:6px; }
+.card h3{ font-size:18px; font-weight:500; }
+.card .medium{ margin-top:4px; color:var(--paper-dim); font-size:14px; }
+.card .price-row{ margin-top:14px; display:flex; align-items:center; justify-content:space-between; }
+.price{ font-family:var(--serif); font-size:17px; }
+.badge{
+  font-size:11.5px; letter-spacing:.03em; color:var(--sold);
+  border:1px solid var(--line); padding:3px 8px;
+}
+
+/* ---------- classes / workshops ---------- */
+.split{ display:grid; grid-template-columns:.9fr 1.1fr; gap:60px; }
+@media (max-width:860px){ .split{ grid-template-columns:1fr; gap:34px; } }
+.info-list{ display:flex; flex-direction:column; gap:20px; margin-top:6px; }
+.info-list .row{ display:flex; gap:16px; border-bottom:1px solid var(--line); padding-bottom:16px; }
+.info-list .row .k{ width:120px; flex:none; color:var(--paper-dim); font-size:13.5px; padding-top:2px; }
+.info-list .row .v{ font-size:15.5px; }
+
+.panel-card{ border:1px solid var(--line); padding:26px; background:var(--ground-2); }
+.panel-card + .panel-card{ margin-top:18px; }
+.panel-card .date{ color:var(--sienna); font-size:13px; margin-bottom:10px; letter-spacing:.03em; }
+.panel-card h3{ font-size:20px; }
+.panel-card .meta{ margin-top:10px; color:var(--paper-dim); font-size:14.5px; }
+.panel-card .foot{ margin-top:18px; display:flex; justify-content:space-between; align-items:center; }
+
+/* ---------- ebooks ---------- */
+.ebook-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:22px; }
+@media (max-width:900px){ .ebook-grid{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width:560px){ .ebook-grid{ grid-template-columns:1fr; } }
+.ebook{ border:1px solid var(--line); background:var(--ground-2); }
+.ebook .cover{
+  aspect-ratio:3/4; width:100%; background:linear-gradient(160deg,#1c1d3d,#242652);
+  display:flex; align-items:center; justify-content:center; padding:22px; text-align:center;
+  color:var(--paper-dim); font-family:var(--serif); font-size:15px;
+}
+.ebook .body{ padding:16px 18px 20px; }
+.ebook h3{ font-size:15.5px; font-weight:500; }
+.ebook .fmt{ font-size:12.5px; color:var(--paper-dim); margin-top:4px; }
+.ebook .price-row{ margin-top:14px; display:flex; justify-content:space-between; align-items:center; }
+.ebook .price{ font-size:15px; }
+.mini-btn{ font-size:12.5px; padding:7px 12px; border:1px solid var(--line); text-decoration:none; color:var(--paper); }
+.mini-btn:hover{ border-color:var(--sienna); }
+
+/* ---------- about ---------- */
+.about-grid{ display:grid; grid-template-columns:.8fr 1.2fr; gap:60px; align-items:center; }
+@media (max-width:860px){ .about-grid{ grid-template-columns:1fr; gap:32px; } }
+.portrait{
+  aspect-ratio:4/5; background:var(--ground-2); border:1px solid var(--line);
+  display:flex; align-items:center; justify-content:center;
+  color:var(--paper-dim); font-size:14px; position:relative;
+}
+.portrait::after{
+  content:""; position:absolute; inset:14px; border:1px solid var(--sienna); opacity:.5;
+  pointer-events:none;
+}
+.about-body p{ color:var(--paper-dim); font-size:16.5px; margin-bottom:16px; }
+.about-body .sig{ margin-top:24px; font-family:var(--serif); font-size:19px; color:var(--paper); font-style:italic; }
+
+/* ---------- contact ---------- */
+.contact-grid{ display:grid; grid-template-columns:1fr 1.3fr; gap:60px; }
+@media (max-width:860px){ .contact-grid{ grid-template-columns:1fr; gap:34px; } }
+.contact-side .dek{ color:var(--paper-dim); font-size:16px; margin-top:10px; }
+.contact-links{ margin-top:28px; display:flex; flex-direction:column; gap:14px; }
+.contact-links a{ text-decoration:none; font-size:15px; display:flex; gap:10px; }
+.contact-links .k{ color:var(--paper-dim); width:90px; flex:none; }
+
+form{ display:flex; flex-direction:column; gap:18px; }
+.field{ display:flex; flex-direction:column; gap:8px; }
+.field label{ font-size:13px; color:var(--paper-dim); }
+.field input, .field select, .field textarea{
+  background:var(--ground-2); border:1px solid var(--line); color:var(--paper);
+  padding:12px 14px; font-family:var(--sans); font-size:14.5px; border-radius:2px;
+}
+.field input:focus, .field select:focus, .field textarea:focus{
+  outline:2px solid var(--sienna); outline-offset:1px;
+}
+.field textarea{ resize:vertical; min-height:120px; }
+.row2{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+@media (max-width:560px){ .row2{ grid-template-columns:1fr; } }
+.form-note{ font-size:13px; color:var(--paper-dim); }
+
+/* ---------- footer ---------- */
+footer{ padding:44px 0; }
+footer .wrap{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
+footer .fbrand{ display:flex; align-items:center; gap:10px; }
+footer .fbrand img{ height:28px; }
+footer .flinks{ display:flex; gap:22px; list-style:none; padding:0; margin:0; font-size:13.5px; color:var(--paper-dim); }
+footer .flinks a{ text-decoration:none; }
+footer .flinks a:hover{ color:var(--paper); }
+.credit{ color:var(--sold); font-size:12.5px; margin-top:8px; }
+
+::selection{ background:var(--sienna); color:#1a1526; }
+:focus-visible{ outline:2px solid var(--sienna); outline-offset:2px; }
+
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  *{ transition:none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     HOW TO EDIT THIS SITE
+     Scroll to the "SITE CONTENT" script block near the bottom.
+     Every artwork, class, workshop, ebook and contact detail is
+     a plain JavaScript object in that one place — change the
+     text there and the page rebuilds itself. You do not need to
+     touch anything above this comment to update content.
+     ============================================================ -->
+
+<header>
+  <nav class="wrap">
+    <a href="#top" class="brandmark">
+      <img src="art-surgeon-logo.jpeg" alt="Art Surgeon" />
+    </a>
+    <ul class="navlinks" id="navlinks">
+      <li><a href="#gallery" class="scribble">Gallery</a></li>
+      <li><a href="#shop" class="scribble">Shop</a></li>
+      <li><a href="#classes" class="scribble">Classes</a></li>
+      <li><a href="#workshops" class="scribble">Workshops</a></li>
+      <li><a href="#library" class="scribble">Library</a></li>
+      <li><a href="#about" class="scribble">About</a></li>
+      <li><a href="#contact" class="scribble">Contact</a></li>
+    </ul>
+    <button class="navtoggle" id="navtoggle" aria-label="Toggle menu">☰</button>
+  </nav>
+</header>
+
+<section id="top" class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-mark">
+      <img src="art-surgeon-logo.jpeg" alt="Art Surgeon — a pencil sharpened into a scalpel" />
+    </div>
+    <div>
+      <h1>Art isn't talent, it's repairable.</h1>
+      <p class="sub">Hyperrealistic portrait commissions, original work, and hands-on classes — for anyone who wants to see how a blank page becomes a face.</p>
+      <div class="cta-row">
+        <a href="#shop" class="btn btn-solid">Browse available work</a>
+        <a href="#classes" class="btn btn-line">Join a class</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="gallery">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="hatch">
+        <svg width="34" height="16" viewBox="0 0 34 16" class="hatch-lines"><path d="M2 15 L10 1 M9 15 L17 1 M16 15 L24 1 M23 15 L31 1" fill="none" stroke-linecap="round"/></svg>
+        Gallery
+      </div>
+      <h2>The work</h2>
+      <p class="dek">A running record of studies, commissions, and pieces made between semesters.</p>
+    </div>
+    <div class="filters" id="galleryFilters"></div>
+    <div class="grid" id="galleryGrid"></div>
+  </div>
+</section>
+
+<section id="shop">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="hatch">
+        <svg width="34" height="16" viewBox="0 0 34 16" class="hatch-lines"><path d="M2 15 L10 1 M9 15 L17 1 M16 15 L24 1 M23 15 L31 1" fill="none" stroke-linecap="round"/></svg>
+        Shop
+      </div>
+      <h2>Available pieces</h2>
+      <p class="dek">Originals looking for a home, plus signed prints of select work.</p>
+    </div>
+    <div class="grid" id="shopGrid"></div>
+  </div>
+</section>
+
+<section id="classes">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="hatch">
+        <svg width="34" height="16" viewBox="0 0 34 16" class="hatch-lines"><path d="M2 15 L10 1 M9 15 L17 1 M16 15 L24 1 M23 15 L31 1" fill="none" stroke-linecap="round"/></svg>
+        Art classes
+      </div>
+      <h2>Weekend classes</h2>
+      <p class="dek">Small, in-person sessions — from first pencil marks to full portrait studies.</p>
+    </div>
+    <div class="split">
+      <div>
+        <div class="info-list" id="classInfo"></div>
+      </div>
+      <div>
+        <div class="panel-card">
+          <h3>What a session covers</h3>
+          <p class="meta" id="classDetail"></p>
+          <div class="foot">
+            <span class="price" id="classPrice"></span>
+            <a href="#contact" class="btn btn-line">Reserve a seat</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="workshops">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="hatch">
+        <svg width="34" height="16" viewBox="0 0 34 16" class="hatch-lines"><path d="M2 15 L10 1 M9 15 L17 1 M16 15 L24 1 M23 15 L31 1" fill="none" stroke-linecap="round"/></svg>
+        Workshops
+      </div>
+      <h2>Upcoming workshops</h2>
+      <p class="dek">One-off, focused sessions on a single technique or subject — open to all levels.</p>
+    </div>
+    <div id="workshopList"></div>
+  </div>
+</section>
+
+<section id="library">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="hatch">
+        <svg width="34" height="16" viewBox="0 0 34 16" class="hatch-lines"><path d="M2 15 L10 1 M9 15 L17 1 M16 15 L24 1 M23 15 L31 1" fill="none" stroke-linecap="round"/></svg>
+        Digital library
+      </div>
+      <h2>PDFs &amp; eBooks</h2>
+      <p class="dek">Guides you can work through at your own pace, download and keep.</p>
+    </div>
+    <div class="ebook-grid" id="ebookGrid"></div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="portrait" id="artistPhoto">photo goes here</div>
+      <div class="about-body">
+        <div class="hatch">
+          <svg width="34" height="16" viewBox="0 0 34 16" class="hatch-lines"><path d="M2 15 L10 1 M9 15 L17 1 M16 15 L24 1 M23 15 L31 1" fill="none" stroke-linecap="round"/></svg>
+          The artist
+        </div>
+        <h2 style="margin-bottom:20px; font-size:clamp(26px,3.5vw,36px);">In the studio</h2>
+        <p id="aboutP1"></p>
+        <p id="aboutP2"></p>
+        <div class="sig">— Art Surgeon</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" style="border-bottom:none;">
+  <div class="wrap">
+    <div class="contact-grid">
+      <div class="contact-side">
+        <div class="hatch">
+          <svg width="34" height="16" viewBox="0 0 34 16" class="hatch-lines"><path d="M2 15 L10 1 M9 15 L17 1 M16 15 L24 1 M23 15 L31 1" fill="none" stroke-linecap="round"/></svg>
+          Contact
+        </div>
+        <h2>Write me a note</h2>
+        <p class="dek">Commissions, purchases, class enquiries, or just to say hello.</p>
+        <div class="contact-links" id="contactLinks"></div>
+      </div>
+      <form id="contactForm">
+        <div class="row2">
+          <div class="field">
+            <label for="cname">Your name</label>
+            <input id="cname" name="name" type="text" required>
+          </div>
+          <div class="field">
+            <label for="cemail">Email</label>
+            <input id="cemail" name="email" type="email" required>
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="cphone">Phone (optional)</label>
+            <input id="cphone" name="phone" type="tel">
+          </div>
+          <div class="field">
+            <label for="creason">What's this about?</label>
+            <select id="creason" name="reason">
+              <option>Commission request</option>
+              <option>Purchase inquiry</option>
+              <option>Art class</option>
+              <option>Workshop</option>
+              <option>General inquiry</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="cmessage">Your message</label>
+          <textarea id="cmessage" name="message" required></textarea>
+        </div>
+        <div>
+          <button type="submit" class="btn btn-solid">Fold &amp; send ✉</button>
+          <p class="form-note" style="margin-top:12px;">Opens your email app with this note pre-filled — nothing is stored on this site.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fbrand">
+      <img src="art-surgeon-logo.jpeg" alt="Art Surgeon" />
+    </div>
+    <div>
+      <ul class="flinks" id="footerLinks"></ul>
+      <div class="credit">© <span id="year"></span> Art Surgeon — made with care</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   SITE CONTENT — edit everything below to update the site.
+   Each block is a plain list of objects. Add, remove, or change
+   entries freely; the page renders whatever is here.
+   ============================================================ */
+
+const CONTACT = {
+  email: "drosvats@gmail.com",
+  phone: "+91 70504 95533",
+  whatsapp: "https://wa.me/917050495533",
+  instagram: "https://instagram.com/osvats.art"
+};
+
+// Gallery: every piece you want shown as a body of work.
+// category must be one of: "Portraits", "Illustrations", "Landscapes"
+const GALLERY = [
+  { title: "Silent Gaze",        category: "Portraits",     medium: "Graphite on paper", image: "" },
+  { title: "Fragments of Light", category: "Illustrations", medium: "Charcoal on paper",  image: "" },
+  { title: "Morning Mist",       category: "Landscapes",    medium: "Watercolour",        image: "" },
+  { title: "The Dreamer",        category: "Portraits",     medium: "Graphite on paper", image: "", sold: true },
+];
+
+// Shop: pieces currently for sale. Leave "price" blank and set sold:true for sold work.
+const SHOP = [
+  { title: "Silent Gaze",        medium: "Graphite on paper", price: "₹15,000", image: "" },
+  { title: "Fragments of Light", medium: "Charcoal on paper",  price: "₹22,000", image: "" },
+  { title: "The Dreamer",        medium: "Graphite on paper",  price: "",        image: "", sold: true },
+];
+
+// Weekend art classes — the recurring, in-person offering.
+const CLASS_INFO = {
+  schedule: "Saturdays & Sundays",
+  location: "H 491, H Block, Alpha 2, Greater Noida",
+  level: "Beginners to advanced",
+  format: "Small groups, in person",
+  detail: "Fundamentals of shading and proportion through to full portrait studies — pencil, charcoal and mixed media, with one-on-one feedback each session.",
+  price: "Contact for current pricing"
+};
+
+// One-off workshops — separate from the recurring weekend classes.
+const WORKSHOPS = [
+  { title: "Portrait Fundamentals", date: "Date to be announced", meta: "3 hours · Materials included · Limited to 8 seats", price: "TBA" },
+  { title: "Charcoal Intensive",    date: "Date to be announced", meta: "Full day · All levels · Limited to 6 seats",         price: "TBA" },
+];
+
+// Downloadable PDFs / eBooks.
+const EBOOKS = [
+  { title: "Portrait Basics Guide", format: "PDF · 24 pages", price: "₹299" },
+  { title: "Shading & Light eBook", format: "PDF · 30 pages", price: "₹349" },
+  { title: "Commission Starter Kit", format: "PDF · 12 pages", price: "₹199" },
+];
+
+const ABOUT = {
+  paragraph1: "With a steady hand and a keen eye, I transform blank pages into living, breathing likenesses. Every stroke is deliberate, every detail matters — because art isn't just talent, it's a practice that can be refined, repaired, and perfected.",
+  paragraph2: "Studying zoology and biomedical sciences alongside the studio work, I bring the same close observation to a face on paper as to anatomy under a microscope."
+};
+
+/* ============================================================
+   RENDER — you shouldn't need to edit anything below this line.
+   ============================================================ */
+
+function artCard(item, withPrice){
+  return `
+    <div class="card" data-cat="${item.category || ''}">
+      <div class="thumb" style="${item.image ? `background:url('${item.image}') center/cover;` : ''}"></div>
+      <div class="body">
+        <h3>${item.title}</h3>
+        <div class="medium">${item.medium}</div>
+        ${withPrice ? `
+          <div class="price-row">
+            ${item.sold ? '<span class="badge">sold</span>' : `<span class="price">${item.price || ''}</span>`}
+          </div>` : ''}
+      </div>
+    </div>`;
+}
+
+function renderGallery(){
+  const cats = ["All", ...Array.from(new Set(GALLERY.map(g => g.category)))];
+  const filterBar = document.getElementById('galleryFilters');
+  filterBar.innerHTML = cats.map((c,i) => `<button class="filter ${i===0?'active':''}" data-filter="${c}">${c}</button>`).join('');
+  const grid = document.getElementById('galleryGrid');
+
+  function draw(filter){
+    const items = filter === 'All' ? GALLERY : GALLERY.filter(g => g.category === filter);
+    grid.innerHTML = items.map(g => artCard(g, false)).join('');
+  }
+  draw('All');
+
+  filterBar.querySelectorAll('.filter').forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBar.querySelectorAll('.filter').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      draw(btn.dataset.filter);
+    });
+  });
+}
+
+function renderShop(){
+  document.getElementById('shopGrid').innerHTML = SHOP.map(s => artCard(s, true)).join('');
+}
+
+function renderClasses(){
+  const rows = [
+    ['Schedule', CLASS_INFO.schedule],
+    ['Location', CLASS_INFO.location],
+    ['Level', CLASS_INFO.level],
+    ['Format', CLASS_INFO.format],
+  ];
+  document.getElementById('classInfo').innerHTML = rows.map(([k,v]) => `
+    <div class="row"><div class="k">${k}</div><div class="v">${v}</div></div>
+  `).join('');
+  document.getElementById('classDetail').textContent = CLASS_INFO.detail;
+  document.getElementById('classPrice').textContent = CLASS_INFO.price;
+}
+
+function renderWorkshops(){
+  document.getElementById('workshopList').innerHTML = WORKSHOPS.map(w => `
+    <div class="panel-card">
+      <div class="date">${w.date}</div>
+      <h3>${w.title}</h3>
+      <div class="meta">${w.meta}</div>
+      <div class="foot">
+        <span class="price">${w.price}</span>
+        <a href="#contact" class="btn btn-line">Enquire</a>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderEbooks(){
+  document.getElementById('ebookGrid').innerHTML = EBOOKS.map(e => `
+    <div class="ebook">
+      <div class="cover">${e.title}</div>
+      <div class="body">
+        <h3>${e.title}</h3>
+        <div class="fmt">${e.format}</div>
+        <div class="price-row">
+          <span class="price">${e.price}</span>
+          <a href="#contact" class="mini-btn">Get it</a>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderAbout(){
+  document.getElementById('aboutP1').textContent = ABOUT.paragraph1;
+  document.getElementById('aboutP2').textContent = ABOUT.paragraph2;
+}
+
+function renderContact(){
+  document.getElementById('contactLinks').innerHTML = `
+    <a href="mailto:${CONTACT.email}"><span class="k">Email</span>${CONTACT.email}</a>
+    <a href="tel:${CONTACT.phone.replace(/\s/g,'')}"><span class="k">Phone</span>${CONTACT.phone}</a>
+    <a href="${CONTACT.whatsapp}" target="_blank" rel="noopener"><span class="k">WhatsApp</span>Message on WhatsApp</a>
+    <a href="${CONTACT.instagram}" target="_blank" rel="noopener"><span class="k">Instagram</span>@osvats.art</a>
+  `;
+  document.getElementById('footerLinks').innerHTML = `
+    <li><a href="${CONTACT.instagram}" target="_blank" rel="noopener">Instagram</a></li>
+    <li><a href="${CONTACT.whatsapp}" target="_blank" rel="noopener">WhatsApp</a></li>
+    <li><a href="mailto:${CONTACT.email}">Email</a></li>
+  `;
+}
+
+document.getElementById('contactForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const f = new FormData(this);
+  const subject = encodeURIComponent(`Art Surgeon — ${f.get('reason')}`);
+  const body = encodeURIComponent(
+    `Name: ${f.get('name')}\nEmail: ${f.get('email')}\nPhone: ${f.get('phone') || '-'}\n\n${f.get('message')}`
+  );
+  window.location.href = `mailto:${CONTACT.email}?subject=${subject}&body=${body}`;
+});
+
+document.getElementById('navtoggle').addEventListener('click', () => {
+  document.getElementById('navlinks').classList.toggle('open');
+});
+document.querySelectorAll('.navlinks a').forEach(a => a.addEventListener('click', () => {
+  document.getElementById('navlinks').classList.remove('open');
+}));
+
+document.getElementById('year').textContent = new Date().getFullYear();
+
+renderGallery();
+renderShop();
+renderClasses();
+renderWorkshops();
+renderEbooks();
+renderAbout();
+renderContact();
+</script>
+
+</body>
+</html>
